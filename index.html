@@ -70,18 +70,22 @@
             width: 100%;
             height: 100%;
             display: flex;
+            text-align: center;
             list-style-type: none;
         }
         .intro li {
             width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100%;
         }
         .intro li:hover {
             background-color: cadetblue;
         }
         .intro img {
+            box-sizing: border-box;
             cursor: pointer;
-            height: 100%;
         }
         .fade-enter-active, .fade-leave-active {
             transition: opacity .5s;
@@ -103,7 +107,7 @@
         }
         #ultimo div {
             background-color: #FEFEFE;
-            padding: 80px;
+            padding: 3vw;
             border: 8px solid black;
             border-radius: 20px;
         }
@@ -205,8 +209,9 @@
                 { fill: 'F23', nombre: 'Fuego fuego', ingrediente: ['Licor Banana', 'Licor Rojo'], picante: false, fuego: true, fuerte: true },
                 { fill: 'cba', nombre: 'Ferno', ingrediente: ['Fernet', 'Ají', 'Cynzano'], picante: true, fuego: true,  fuerte: true },
                 { fill: 'FF0', nombre: 'Pikachu', ingrediente: ['Licor Banana', 'Licor Naranja'], picante: true, fuego: false, fuerte: true },
-                { fill: 'FBB', nombre: 'Coco Beach', ingrediente: ['Ron Coco', 'Licor Fresa'], picante: false, fuego: false, fuerte: false },
-                { fill: 'FDD', nombre: 'Coco Beach2', ingrediente: ['Ron Coco', 'Granadina'], picante: false, fuego: false, fuerte: false },
+                { fill: 'FBB', nombre: 'Congo Beach', ingrediente: ['Ron Coco', 'Licor Fresa'], picante: false, fuego: false, fuerte: false },
+                { fill: 'FEE', nombre: 'Coconut Drink', ingrediente: ['Ron Coco', 'Granadina'], picante: false, fuego: false, fuerte: false },
+                { fill: 'FF9', nombre: 'Maracuyá', ingrediente: ['Licor Maracuyá', 'Granadina'], picante: false, fuego: false, fuerte: false },
                 { fill: 'FF9', nombre: 'TequilAzo', ingrediente: ['Tequila'], picante: false, fuego: false, fuerte: true },
                 { fill: 'FF7', nombre: 'Bananazo', ingrediente: ['Licor Banana', 'Vodka'], picante: false, fuego: false, fuerte: true },
                 { fill: 'CA3', nombre: 'Long Island', ingrediente: ['Tequila', 'Vodka', 'Ron'], picante: false, fuego: false, fuerte: true },
@@ -221,17 +226,6 @@
                     return this.tragos.filter((trago) => {
                         return trago.picante === this.picante && trago.fuego === this.fuego && trago.fuerte === this.fuerte
                     })
-                },
-                filteredStories() {
-                    let filteredStories = this.stories.filter((story) => {
-                        return story.author.toLowerCase().includes(this.searchTerm.toLowerCase());
-                    })
-                    
-                    let orderedStories = filteredStories.sort((a, b) => {
-                        return b.upvoted - a.upvoted;
-                    })
-
-                    return orderedStories;
                 },
                 precioTotal() {
                     let sum = 0
@@ -254,9 +248,7 @@
             },
             methods: {
                 explo() {
-                    alert(`Gracias por su compra,
-                    es imaginaria así que no va a tener ningún chupito
-                    ni yo ${this.precioTotal}, pero buej, cosas de la vida.`)
+                    alert(`Gracias por su compra, es imaginaria así que no va a tener ningún chupito ni yo €${this.precioTotal}, pero buej, cosas de la vida.`)
                     location.reload();
                 },
                 meme(value) {
