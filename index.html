@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .mostrarChupitos {
+            margin: 80px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .chupito {
+            align-items: center;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            margin: 0 30px 30px 0;
+            padding: 20px;
+            width: 150px;
+            user-select: none;
+        }
+        .chupito:active {
+            transform: translateY(1px);
+        }
+        .cabeza {
+            background-color: #DDEEFF;
+            display: flex;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100vw;
+        }
+        .cabeza li {
+            display: inline-block;
+            cursor: pointer;
+        }
+        .cabeza img {
+            height: 50px;
+        }
+        .borde {
+            border: 2px solid red;
+        }
+        aside {
+            background-color: brown;
+            position: absolute;
+            width: 30%;
+            height: 100vh;
+            color: white;
+            top: 0;
+            right: 0;
+            z-index: 1;
+            padding: 10px;
+        }
+        .intro {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: blanchedalmond;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+        .intro ul {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            list-style-type: none;
+        }
+        .intro li {
+            width: 50%;
+            height: 100%;
+        }
+        .intro li:hover {
+            background-color: cadetblue;
+        }
+        .intro img {
+            cursor: pointer;
+            height: 100%;
+        }
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s;
+        }
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+        #ultimo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background-color: rgba(0,0,0,0.6);
+        }
+        #ultimo div {
+            background-color: #FEFEFE;
+            padding: 80px;
+            border: 8px solid black;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <br>
+    <div id="app">
+
+        <aside v-show="cantidadTotal > 0">
+            <h3>Total:</h3><hr>
+            <h6 v-if="muestra.cantidad>0" v-for="muestra in total">
+                {{muestra.precio}}€ - {{muestra.nombre}} &emsp;&emsp;&emsp;&emsp;
+                <button :disabled="muestra.cantidad===0" @click="[muestra.cantidad--, muestra.precio--]">-</button>
+                <span>{{muestra.cantidad}}</span>
+                <button @click="[muestra.cantidad++, muestra.precio++]">+</button>
+            </h6>
+            <hr>
+            <h6>{{precioTotal}}€ - {{ cantidadTotal }} Chupitos<button class="btn btn-warning ml-2" @click="comprar=true">Comprar</button></h6>
+        </aside>
+
+        <nav class="cabeza">
+            <ul>
+                <li :class="picante ? 'borde' : null" @click="picante = true"><img src="picante.svg"></li>
+                <li :class="!picante ? 'borde' : null" @click="picante = false"><img src="notpicante.svg"></li>
+            </ul>
+            <ul>
+                <li :class="fuego ? 'borde' : null" @click="fuego = true"><img src="fire.svg"></li>
+                <li :class="!fuego ? 'borde' : null" @click="fuego = false"><img src="notfire.svg"></li>
+            </ul>
+            <ul>
+                <li :class="fuerte ? 'borde' : null" @click="fuerte = true"><img src="strong.svg"></li>
+                <li :class="!fuerte ? 'borde' : null" @click="fuerte = false"><img src="notstrong.svg"></li>
+            </ul>
+        </nav>
+
+        <transition name="fade" mode="out-in">
+            <div v-if="picante===null || fuego===null || fuerte===null" class="intro">
+                <transition name="fade" mode="out-in">
+                    <ul v-if="picante===null">
+                        <li><img @click="[picante = true, fuerte = true]" src="picante.svg"></li>
+                        <li><img @click="picante = false" src="notpicante.svg"></li>
+                    </ul>
+                </transition>
+
+                <transition name="fade" mode="out-in">            
+                    <ul v-if="fuego===null">
+                        <li><img @click="[fuego = true, fuerte = true]" src="fire.svg"></li>
+                        <li><img @click="fuego = false" src="notfire.svg"></li>
+                    </ul>
+                </transition>
+
+                <transition name="fade" mode="out-in">            
+                    <ul v-if="fuerte===null">
+                        <li><img @click="fuerte = true" src="strong.svg"></li>
+                        <li><img @click="fuerte = false" src="notstrong.svg"></li>
+                    </ul>
+                </transition>
+            </div>
+        </transition>
+
+        <section class="mostrarChupitos">
+            <div class="chupito" v-for="shot in filteredTragos" @click="meme(shot)">
+                <svg enable-background="new 0 0 512 512" height="52" viewBox="0 0 512 512" width="52">
+                    <path fill="#CDF" d="m460.694 6.22c-3.03-3.92-7.7-6.22-12.66-6.22h-384c-10.46 0-18.122 9.896-15.48 20.04 48.872 187.443 47.48 272.946 47.48 443.96 0 26.47 21.53 48 48 48h224c26.47 0 48-21.53 48-48 0-102.56-3.903-206.537 25.39-351.04 19.751-96.152 27.56-96.015 19.27-106.74zm-33.37 25.78c-29.324 114.039-32.556 177.082-34.69 183.47v.04c-14.712 103.062-15.172 111.707-26.49 133.76-5.177 11.658-19.162 29.611-33.45 40.47-36.463 29.677-93.434 36.142-139.57 9.35-33.067-19.286-54.556-52.783-59.64-88.41-19.751-131.298-23.374-181.784-48.38-277.28-.56-2.178-26.712-1.4 342.22-1.4z"/>
+                    <path :fill="'#'+shot.fill" d="m165.114 305.87c10.853 71.249 96.239 102.864 150.86 55.91 16.67-14.33 27.67-34.18 30.98-55.92 20.37-134.023 20.974-160.84 39.56-241.86h-260.96c19.099 83.352 18.611 104.173 39.56 241.87z"/></svg>
+                <h6>{{ shot.nombre }}</h6>
+                <span style="font-size: .8em" v-for="ingre of shot.ingrediente">- {{ ingre }}</span>
+            </div>
+        </section>
+
+        <div id="ultimo" v-if="comprar">
+            <div>
+                <br><h4><u>{{ cantidadTotal }} Shots</u></h4>
+                <p v-if="ver.cantidad!=0" v-for="ver of total">{{ ver.cantidad }} x {{ ver.nombre }}</p>
+                <hr>
+                <h2>Total: {{ precioTotal }}€</h2><hr>
+                <button class="btn btn-success" @click="explo">Confirmar</button>
+                <button class="btn btn-danger" @click="comprar=false">Cancelar</button>
+            </div>
+        </div>
+    
+    </div>
+    
+    <script>
+        
+        new Vue({
+            el: '#app',
+            data: {
+                cantidad: Number,
+                picante: null,
+                fuego: null,
+                fuerte: null,
+                comprar: false,
+                total: [],
+                tragos: [
+                { fill: '45F', nombre: 'Harry Potter', ingrediente: ['Licor Azul', 'Ron'], picante: false, fuego: true, fuerte: true },
+                { fill: '2F4', nombre: 'Tasca Moe', ingrediente: ['Licor Azul', 'Licor Rojo'], picante: false, fuego: true, fuerte: true },
+                { fill: 'F23', nombre: 'Fuego fuego', ingrediente: ['Licor Banana', 'Licor Rojo'], picante: false, fuego: true, fuerte: true },
+                { fill: 'cba', nombre: 'Ferno', ingrediente: ['Fernet', 'Ají', 'Cynzano'], picante: true, fuego: true,  fuerte: true },
+                { fill: 'FF0', nombre: 'Pikachu', ingrediente: ['Licor Banana', 'Licor Naranja'], picante: true, fuego: false, fuerte: true },
+                { fill: 'FBB', nombre: 'Coco Beach', ingrediente: ['Ron Coco', 'Licor Fresa'], picante: false, fuego: false, fuerte: false },
+                { fill: 'FDD', nombre: 'Coco Beach2', ingrediente: ['Ron Coco', 'Granadina'], picante: false, fuego: false, fuerte: false },
+                { fill: 'FF9', nombre: 'TequilAzo', ingrediente: ['Tequila'], picante: false, fuego: false, fuerte: true },
+                { fill: 'FF7', nombre: 'Bananazo', ingrediente: ['Licor Banana', 'Vodka'], picante: false, fuego: false, fuerte: true },
+                { fill: 'CA3', nombre: 'Long Island', ingrediente: ['Tequila', 'Vodka', 'Ron'], picante: false, fuego: false, fuerte: true },
+                { fill: 'FF9', nombre: 'Ponche de Crema', ingrediente: ['Ron', 'Piña Colada'], picante: false, fuego: false, fuerte: true },
+                { fill: '333', nombre: 'Jagger', ingrediente: ['Jaggermaistter'], picante: false, fuego: false, fuerte: true },
+                { fill: '1F1', nombre: 'El fuerte', ingrediente: ['Tequila', 'Ron', 'Vodka'], picante: false, fuego: false, fuerte: true },
+                { fill: 'F88', nombre: 'Tutankamon', ingrediente: ['Licor Beige', 'Granadina'], picante: false, fuego: false, fuerte: true }
+                ]
+            },
+            computed: {
+                filteredTragos() {
+                    return this.tragos.filter((trago) => {
+                        return trago.picante === this.picante && trago.fuego === this.fuego && trago.fuerte === this.fuerte
+                    })
+                },
+                filteredStories() {
+                    let filteredStories = this.stories.filter((story) => {
+                        return story.author.toLowerCase().includes(this.searchTerm.toLowerCase());
+                    })
+                    
+                    let orderedStories = filteredStories.sort((a, b) => {
+                        return b.upvoted - a.upvoted;
+                    })
+
+                    return orderedStories;
+                },
+                precioTotal() {
+                    let sum = 0
+
+                    this.total.forEach(element => {
+                        sum += element.precio
+                    })
+                    
+                    return sum
+                },
+                cantidadTotal() {
+                    let cont = 0
+
+                    this.total.forEach(element => {
+                        cont += element.cantidad
+                    })
+                    return cont
+                }
+
+            },
+            methods: {
+                explo() {
+                    alert(`Gracias por su compra,
+                    es imaginaria así que no va a tener ningún chupito
+                    ni yo ${this.precioTotal}, pero buej, cosas de la vida.`)
+                    location.reload();
+                },
+                meme(value) {
+
+                    const size = Object.keys(this.total).length;
+                    let comp = false
+                    if(size === 0) {
+                        console.log('Caso 1: arreglo vacio');
+                        return this.total.push({nombre: value.nombre, precio: 1, cantidad: 1})
+                    } else {
+                        this.total.forEach(element => {
+                            if (element.nombre === value.nombre) {
+                                console.log('Caso2: coinciden nombres, se agrega a cantidad');
+                                comp = true
+                                return [element.cantidad++, element.precio++]
+                            }
+                        })
+                    }  
+                    console.log(comp);  
+                    if(comp===false) {
+                        return this.total.push({nombre: value.nombre, precio: 1, cantidad: 1})
+                    }     
+                }
+            }
+        })
+    </script>
+</body>
+</html>
