@@ -35,15 +35,19 @@
             top: 0;
             width: 100vw;
         }
+        .cabeza ul {
+            margin: 5px 25px 7px 25px;
+        }
         .cabeza li {
             display: inline-block;
             cursor: pointer;
         }
         .cabeza img {
             height: 50px;
+            filter: opacity(.4) grayscale(1);
         }
-        .borde {
-            border: 2px solid red;
+        .borde img {
+            filter: opacity(1)
         }
         aside {
             background-color: brown;
@@ -182,7 +186,7 @@
 
         <div id="ultimo" v-if="comprar">
             <div>
-                <br><h4><u>{{ cantidadTotal }} Shots</u></h4>
+                <h4><u>{{ cantidadTotal }} Shots</u></h4>
                 <p v-if="ver.cantidad!=0" v-for="ver of total">{{ ver.cantidad }} x {{ ver.nombre }}</p>
                 <hr>
                 <h2>Total: {{ precioTotal }}€</h2><hr>
