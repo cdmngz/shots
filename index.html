@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="es">
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <style>
+        body {
+            user-select: none;
+        }
         .mostrarChupitos {
             margin: 80px;
             display: flex;
@@ -21,7 +24,6 @@
             margin: 0 30px 30px 0;
             padding: 20px;
             text-align: center;
-            user-select: none;
             width: 150px;
         }
         .chupito:active {
@@ -50,15 +52,18 @@
             filter: opacity(1)
         }
         aside {
-            background-color: brown;
-            position: absolute;
-            width: 30%;
-            height: 100vh;
+            background-color: #EF5500;
+            position: fixed;
+            min-height: 100vh;
             color: white;
             top: 0;
             right: 0;
-            z-index: 1;
-            padding: 10px;
+            padding: 3%;
+        }
+        aside div {
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 10% 58% 12% 8% 12%;
         }
         .intro {
             position: absolute;
@@ -100,24 +105,24 @@
             opacity: 0;
         }
         #ultimo {
-            display: flex;
-            justify-content: center;
             align-items: center;
+            background-color: rgba(0,0,0,0.6);
+            display: flex;
             height: 100vh;
-            width: 100vw;
+            justify-content: center;
+            left: 0;
             position: fixed;
             top: 0;
-            left: 0;
+            width: 100vw;
             z-index: 1;
-            background-color: rgba(0,0,0,0.6);
         }
         #ultimo div {
             background-color: #FEFEFE;
-            padding: 3vw;
-            border: 8px solid black;
             border-radius: 20px;
+            border: 8px solid black;
+            padding: 3vw;
         }
-        @media only screen and (max-width: 768px) {
+        @media only screen and (max-width: 900px) {
             .cabeza ul {
                 margin: 3px 0;
             }
@@ -127,18 +132,6 @@
 <body>
     <br>
     <div id="app">
-
-        <aside v-show="cantidadTotal > 0">
-            <h3>Total:</h3><hr>
-            <h6 v-if="muestra.cantidad>0" v-for="muestra in total">
-                {{muestra.precio}}€ - {{muestra.nombre}} &emsp;&emsp;&emsp;&emsp;
-                <button :disabled="muestra.cantidad===0" @click="[muestra.cantidad--, muestra.precio--]">-</button>
-                <span>{{muestra.cantidad}}</span>
-                <button @click="[muestra.cantidad++, muestra.precio++]">+</button>
-            </h6>
-            <hr>
-            <h6>{{precioTotal}}€ - {{ cantidadTotal }} Chupitos<button class="btn btn-warning ml-2" @click="comprar=true">Comprar</button></h6>
-        </aside>
 
         <nav class="cabeza">
             <ul>
@@ -183,8 +176,8 @@
         </transition>
 
         <section class="mostrarChupitos">
-            <p v-if="filteredTragos.length===0">Por el momento no tenemos chupitos suaves{{ picante && fuego ? ', picantes y con fuego...' :  picante ? ' y picantes...' : ' con fuego...'}}</p>
-            <div class="chupito" v-for="shot in filteredTragos" @click="meme(shot)">
+            <p v-show="filteredTragos.length===0">No tenemos chupitos {{ picante && fuego ? 'picantes y con fuego, suaves...' :  picante ? 'picantes suaves...' : ' con fuego suaves...'}}</p>
+            <div class="chupito" v-for="shot in filteredTragos" @click="[meme(shot), mostrarAside=true]">
                 <svg enable-background="new 0 0 512 512" height="52" viewBox="0 0 512 512" width="52">
                     <path fill="#CDF" d="m460.694 6.22c-3.03-3.92-7.7-6.22-12.66-6.22h-384c-10.46 0-18.122 9.896-15.48 20.04 48.872 187.443 47.48 272.946 47.48 443.96 0 26.47 21.53 48 48 48h224c26.47 0 48-21.53 48-48 0-102.56-3.903-206.537 25.39-351.04 19.751-96.152 27.56-96.015 19.27-106.74zm-33.37 25.78c-29.324 114.039-32.556 177.082-34.69 183.47v.04c-14.712 103.062-15.172 111.707-26.49 133.76-5.177 11.658-19.162 29.611-33.45 40.47-36.463 29.677-93.434 36.142-139.57 9.35-33.067-19.286-54.556-52.783-59.64-88.41-19.751-131.298-23.374-181.784-48.38-277.28-.56-2.178-26.712-1.4 342.22-1.4z"/>
                     <path :fill="'#'+shot.fill" d="m165.114 305.87c10.853 71.249 96.239 102.864 150.86 55.91 16.67-14.33 27.67-34.18 30.98-55.92 20.37-134.023 20.974-160.84 39.56-241.86h-260.96c19.099 83.352 18.611 104.173 39.56 241.87z"/></svg>
@@ -192,6 +185,20 @@
                 <span style="font-size: .8em" v-for="ingre of shot.ingrediente">- {{ ingre }}</span>
             </div>
         </section>
+
+        <aside v-show="mostrarAside === true && cantidadTotal > 0">
+            <button @click="mostrarAside=false" class="close"><span aria-hidden="true">&times;</span></button>
+            <h3><u>Total:</u></h3><hr>
+            <div v-show="muestra.cantidad > 0" v-for="muestra in total">
+                <span>{{muestra.precio}}€</span>
+                <span>- {{muestra.nombre}}</span>
+                <button :disabled="muestra.cantidad===0" @click="[muestra.cantidad--, muestra.precio--]">-</button>
+                <span style="text-align: center">{{muestra.cantidad}}</span>
+                <button @click="[muestra.cantidad++, muestra.precio++]">+</button>
+            </div>
+            <hr>
+            <h6>{{precioTotal}}€ - {{ cantidadTotal }} Chupitos<button class="btn btn-warning ml-2" @click="comprar=true">Comprar</button></h6>
+        </aside>
 
         <div id="ultimo" v-if="comprar">
             <div>
@@ -216,6 +223,7 @@
                 fuego: null,
                 fuerte: null,
                 comprar: false,
+                mostrarAside: false,
                 total: [],
                 tragos: [
                 { fill: '45F', nombre: 'Harry Potter', ingrediente: ['Licor Azul', 'Ron'], picante: false, fuego: true, fuerte: true },
@@ -229,7 +237,7 @@
                 { fill: 'FF9', nombre: 'TequilAzo', ingrediente: ['Tequila', 'Limón', 'Sal'], picante: false, fuego: false, fuerte: true },
                 { fill: 'FF7', nombre: 'Bananazo', ingrediente: ['Licor Banana', 'Vodka'], picante: false, fuego: false, fuerte: true },
                 { fill: 'CA3', nombre: 'Long Island', ingrediente: ['Tequila', 'Vodka', 'Ron'], picante: false, fuego: false, fuerte: true },
-                { fill: 'FF9', nombre: 'Ponche de Crema', ingrediente: ['Ron', 'Piña Colada'], picante: false, fuego: false, fuerte: true },
+                { fill: 'FF9', nombre: 'Ponche Crema', ingrediente: ['Ron', 'Piña Colada'], picante: false, fuego: false, fuerte: true },
                 { fill: '333', nombre: 'Jäger', ingrediente: ['Jägermeister'], picante: false, fuego: false, fuerte: true },
                 { fill: '1F1', nombre: 'El fuerte', ingrediente: ['Tequila', 'Ron', 'Vodka'], picante: false, fuego: false, fuerte: true },
                 { fill: 'F88', nombre: 'Tutankamon', ingrediente: ['Licor Beige', 'Granadina'], picante: false, fuego: false, fuerte: true }
@@ -258,7 +266,6 @@
                     })
                     return cont
                 }
-
             },
             methods: {
                 explo() {
