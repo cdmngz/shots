@@ -1,224 +1,293 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <style>
-        body {
-            user-select: none;
-        }
-        .mostrarChupitos {
-            margin: 80px;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .chupito {
-            align-items: center;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            margin: 0 30px 30px 0;
-            padding: 20px;
-            text-align: center;
-            width: 150px;
-        }
-        .chupito:active {
-            transform: translateY(1px);
-        }
-        .cabeza {
-            background-color: #DDEEFF;
-            display: flex;
-            left: 0;
-            position: absolute;
-            top: 0;
-            width: 100vw;
-        }
-        .cabeza ul {
-            margin: 5px 25px 7px 25px;
-        }
-        .cabeza li {
-            display: inline-block;
-            cursor: pointer;
-        }
-        .cabeza img {
-            height: 50px;
-            filter: opacity(.4) grayscale(1);
-        }
-        .borde img {
-            filter: opacity(1)
-        }
-        aside {
-            background-color: #EF5500;
-            position: fixed;
-            min-height: 100vh;
-            color: white;
-            top: 0;
-            right: 0;
-            padding: 3%;
-        }
-        aside div {
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: 10% 58% 12% 8% 12%;
-        }
-        .intro {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-        }
-        .intro ul {
-            background-color: blanchedalmond;
-            display: flex;
-            height: 100%;
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            position: absolute;
-            text-align: center;
-            width: 100%;
-        }
-        .intro li {
-            width: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-        .intro li:hover {
-            background-color: cadetblue;
-        }
-        .intro img {
-            box-sizing: border-box;
-            cursor: pointer;
-        }
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shots</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <style>
+    @font-face {
+      font-family: Roboto-Regular;
+      src: url(Roboto-Regular.ttf);
+    }
+    body {
+      user-select: none;
+      color: #026C62;
+      font-family: 'Roboto-Regular';
+      padding: 0;
+      margin: 0;
+      min-width: 100vw;
+    }
+    .nav-bar {
+      background-color: #FCD7BD;
+      display: flex;
+      left: 0;
+      position: absolute;
+      top: 0;
+      min-width: 100vw;
+    }
+    .nav-bar .logo {
+      height: 90px;
+      margin-left: 20px;
+    }
+    .nav-bar ul {
+      display: inline-flex;
+      height: fit-content;
+    }
+    .nav-bar li {
+      cursor: pointer;
+      list-style: none;
+      height: fit-content;
+    }
+    .nav-bar .nav-img {
+      height: 58px;
+    }
+    .borde {
+      background-color: rgba(2, 108, 98, 0.1);
+      border-radius: 5px;
+    }
+    .mostrarChupitos {
+      margin: 150px 100px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .chupito {
+      align-items: center;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      margin: 0 30px 30px 0;
+      padding: 20px;
+      text-align: center;
+      width: 150px;
+    }
+    .chupito:active {
+      transform: translateY(1px);
+    }
+    .aside-total {
+      background-color: #026c62;
+      color: #fed700;
+      height: 75vh;
+      position: absolute;
+      padding: 20px;
+      right: 0;
+      width: 30vw;
+      z-index: 1;
+    }
+    .close {
+      opacity: 0.9;
+      cursor: pointer;
+      font-weight: bold;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+    .aside-total div {
+      display: grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: 10% 58% 12% 8% 12%;
+    }
+    .aside-total button {
+      background-color: #fed700;
+      border: none;
+      border-radius: 2px;
+      color: #026c62;
+      margin: 0 10px;
+      outline: none;
+      padding: 10px;
+    }
+    .intro {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-height: 100vh;
+      min-width: 100vw;
+      overflow: hidden;
+    }
+    .intro ul {
+      background-color: #FCD7BD;
+      display: flex;
+      height: 100%;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+      text-align: center;
+      width: 100%;
+    }
+    .intro li {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    .intro li:hover {
+      background-color: #026c62;
+    }
+    .intro img {
+      box-sizing: border-box;
+      cursor: pointer;
+      height: 100%;
+    }
         .fade-enter-active, .fade-leave-active {
             transition: opacity .4s;
         }
         .fade-enter, .fade-leave-to {
             opacity: 0;
         }
-        #ultimo {
-            align-items: center;
-            background-color: rgba(0,0,0,0.6);
-            display: flex;
-            height: 100vh;
-            justify-content: center;
-            left: 0;
-            position: fixed;
-            top: 0;
-            width: 100vw;
-            z-index: 1;
+      .btn-success {
+        background-color: rgb(40,167,69);
+        border: none;
+        border-radius: 2px;
+        color: white;
+        outline: none;
+        padding: 10px;
+        margin: 0 10px;
+      }
+      .btn-danger {
+        background-color: #dc3545;
+        border: none;
+        border-radius: 2px;
+        color: white;
+        outline: none;
+        padding: 10px;
+        margin: 0 10px;
+      }
+      #ultimo {
+        align-items: center;
+        background-color: rgba(0,0,0,0.6);
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        z-index: 2;
+      }
+      #ultimo div {
+        background-color: #FEFEFE;
+        border-radius: 20px;
+        border: 8px solid #026c62;
+        padding: 3vw;
+      }
+      @media only screen and (max-width: 600px) {
+        .intro img {
+          box-sizing: border-box;
+          cursor: pointer;
+          height: 60%;
         }
-        #ultimo div {
-            background-color: #FEFEFE;
-            border-radius: 20px;
-            border: 8px solid black;
-            padding: 3vw;
-        }
-        @media only screen and (max-width: 900px) {
-            .cabeza ul {
-                margin: 3px 0;
-            }
-        }
-    </style>
+      }
+  </style>
 </head>
 <body>
-    <br>
-    <div id="app">
+  <div id="app">
+    <nav class="nav-bar">
+        <a href="/">
+          <img class="logo" src="LOGO-PARA-FONDO-ROSA.png">
+        </a>
+      <ul>
+        <li :class="picante===true ? 'borde' : null" @click="picante = true">
+          <img class="nav-img" src="icono-aji-simple.png">
+        </li>
+        <li :class="picante===false ? 'borde' : null" @click="picante = false">
+          <img class="nav-img" src="icono-bomberos-simple.png">
+        </li>
+      </ul>
+      <ul>
+        <li :class="fuego===true ? 'borde' : null" @click="fuego = true">
+          <img class="nav-img" src="icono-fuego-simple.png">
+        </li>
+        <li :class="fuego===false ? 'borde' : null" @click="fuego = false">
+          <img class="nav-img" src="icono-agua-simple.png">
+        </li>
+      </ul>
+      <ul>
+        <li :class="fuerte===true ? 'borde' : null" @click="fuerte = true">
+          <img class="nav-img" src="strong.svg">
+        </li>
+        <li :class="fuerte===false ? 'borde' : null" @click="fuerte = false">
+          <img class="nav-img" src="notstrong.svg">
+        </li>
+      </ul>
+    </nav>
 
-        <nav class="cabeza">
-            <ul>
-                <li :class="picante ? 'borde' : null" @click="picante = true"><img src="picante.svg"></li>
-                <li :class="!picante ? 'borde' : null" @click="picante = false"><img src="notpicante.svg"></li>
-            </ul>
-            <ul>
-                <li :class="fuego ? 'borde' : null" @click="fuego = true"><img src="fire.svg"></li>
-                <li :class="!fuego ? 'borde' : null" @click="fuego = false"><img src="notfire.svg"></li>
-            </ul>
-            <ul>
-                <li :class="fuerte ? 'borde' : null" @click="fuerte = true"><img src="strong.svg"></li>
-                <li :class="!fuerte ? 'borde' : null" @click="fuerte = false"><img src="notstrong.svg"></li>
-            </ul>
-        </nav>
+    <aside class="aside-total" v-show="mostrarAside === true && cantidadTotal > 0">
+      <span @click="mostrarAside=false" class="close">x</span>
+      <h3>Por comprar</h3>
+      <hr>
+      <div style="margin: 5px;" v-show="muestra.cantidad > 0" v-for="muestra in total">
+        <span>{{muestra.precio}}€</span>
+        <span>{{muestra.nombre}}</span>
+        <button :disabled="muestra.cantidad===0" @click="[muestra.cantidad--, muestra.precio--]">-</button>
+        <span style="text-align: center">{{muestra.cantidad}}</span>
+        <button @click="[muestra.cantidad++, muestra.precio++]">+</button>
+      </div>
+      <hr>
+      <h4>
+        {{precioTotal}}€ - {{ cantidadTotal }} Chupitos 
+        <button class="btn btn-warning ml-2" @click="comprar=true"> Comprar</button>
+      </h4>
+    </aside>
 
-        <transition name="fade" mode="out-in">
-            <div v-if="picante===null || fuego===null || fuerte===null" class="intro">
-
-                <transition name="fade" mode="out-in">            
-                    <ul v-if="fuerte===null">
-                        <li><img @click="fuerte = true" src="strong.svg"></li>
-                        <li><img @click="fuerte = false" src="notstrong.svg"></li>
-                    </ul>
-                </transition>
-
-                <transition name="fade" mode="out-in">            
-                    <ul v-if="fuego===null">
-                        <li><img @click="[fuego = true, fuerte = true]" src="fire.svg"></li>
-                        <li><img @click="fuego = false" src="notfire.svg"></li>
-                    </ul>
-                </transition>
-
-                <transition name="fade" mode="out-in">
-                    <ul v-if="picante===null">
-                        <li><img @click="[picante = true, fuerte = true]" src="picante.svg"></li>
-                        <li><img @click="picante = false" src="notpicante.svg"></li>
-                    </ul>
-                </transition>
-
-            </div>
+    <transition transition name="fade" mode="out-in">
+      <div v-if="picante===null || fuego===null || fuerte===null" class="intro">
+        <transition name="fade" mode="out-in">            
+          <ul v-if="fuerte===null">
+            <li><img @click="fuerte = true" src="strong.svg"></li>
+            <li><img @click="fuerte = false" src="notstrong.svg"></li>
+          </ul>
         </transition>
+        <transition name="fade" mode="out-in">            
+          <ul v-if="fuego===null">
+            <li><img @click="[fuego = true, fuerte = true]" src="icono-fuego.png"></li>
+            <li><img @click="fuego = false" src="icono-agua.png"></li>
+          </ul>
+        </transition>
+        <transition name="fade" mode="out-in">
+          <ul v-if="picante===null">
+            <li><img @click="[picante = true, fuerte = true]" src="icono-aji.png"></li>
+            <li><img @click="picante = false" src="icono-bomberos.png"></li>
+          </ul>
+        </transition>
+      </div>
+    </transition>
 
-        <section class="mostrarChupitos">
-            <p v-show="filteredTragos.length===0">No tenemos chupitos {{ picante && fuego ? 'picantes y con fuego, suaves...' :  picante ? 'picantes suaves...' : ' con fuego suaves...'}}</p>
-            <div class="chupito" v-for="shot in filteredTragos" @click="[meme(shot), mostrarAside=true]">
-                <svg enable-background="new 0 0 512 512" height="52" viewBox="0 0 512 512" width="52">
-                    <path fill="#CDF" d="m460.694 6.22c-3.03-3.92-7.7-6.22-12.66-6.22h-384c-10.46 0-18.122 9.896-15.48 20.04 48.872 187.443 47.48 272.946 47.48 443.96 0 26.47 21.53 48 48 48h224c26.47 0 48-21.53 48-48 0-102.56-3.903-206.537 25.39-351.04 19.751-96.152 27.56-96.015 19.27-106.74zm-33.37 25.78c-29.324 114.039-32.556 177.082-34.69 183.47v.04c-14.712 103.062-15.172 111.707-26.49 133.76-5.177 11.658-19.162 29.611-33.45 40.47-36.463 29.677-93.434 36.142-139.57 9.35-33.067-19.286-54.556-52.783-59.64-88.41-19.751-131.298-23.374-181.784-48.38-277.28-.56-2.178-26.712-1.4 342.22-1.4z"/>
-                    <path :fill="'#'+shot.fill" d="m165.114 305.87c10.853 71.249 96.239 102.864 150.86 55.91 16.67-14.33 27.67-34.18 30.98-55.92 20.37-134.023 20.974-160.84 39.56-241.86h-260.96c19.099 83.352 18.611 104.173 39.56 241.87z"/></svg>
-                <h6>{{ shot.nombre }}</h6>
-                <span style="font-size: .8em" v-for="ingre of shot.ingrediente">- {{ ingre }}</span>
-            </div>
-        </section>
+    <section class="mostrarChupitos">
+      <p v-show="filteredTragos.length===0">No tenemos chupitos {{ picante && fuego ? 'picantes y con fuego, suaves...' :  picante ? 'picantes suaves...' : ' con fuego suaves...'}}</p>
+      <div class="chupito" v-for="shot in filteredTragos" @click="[meme(shot), mostrarAside=true]">
+        <svg enable-background="new 0 0 512 512" height="52" viewBox="0 0 512 512" width="52">
+          <path fill="#CDF" d="m460.694 6.22c-3.03-3.92-7.7-6.22-12.66-6.22h-384c-10.46 0-18.122 9.896-15.48 20.04 48.872 187.443 47.48 272.946 47.48 443.96 0 26.47 21.53 48 48 48h224c26.47 0 48-21.53 48-48 0-102.56-3.903-206.537 25.39-351.04 19.751-96.152 27.56-96.015 19.27-106.74zm-33.37 25.78c-29.324 114.039-32.556 177.082-34.69 183.47v.04c-14.712 103.062-15.172 111.707-26.49 133.76-5.177 11.658-19.162 29.611-33.45 40.47-36.463 29.677-93.434 36.142-139.57 9.35-33.067-19.286-54.556-52.783-59.64-88.41-19.751-131.298-23.374-181.784-48.38-277.28-.56-2.178-26.712-1.4 342.22-1.4z"/>
+          <path :fill="'#'+shot.fill" d="m165.114 305.87c10.853 71.249 96.239 102.864 150.86 55.91 16.67-14.33 27.67-34.18 30.98-55.92 20.37-134.023 20.974-160.84 39.56-241.86h-260.96c19.099 83.352 18.611 104.173 39.56 241.87z"/>
+        </svg>
+        <h5>{{ shot.nombre }}</h5>
+        <span style="font-size: .8em" v-for="ingre of shot.ingrediente">· {{ ingre }}</span>
+      </div>
+    </section>
 
-        <aside v-show="mostrarAside === true && cantidadTotal > 0">
-            <button @click="mostrarAside=false" class="close"><span aria-hidden="true">&times;</span></button>
-            <h3><u>Total:</u></h3><hr>
-            <div v-show="muestra.cantidad > 0" v-for="muestra in total">
-                <span>{{muestra.precio}}€</span>
-                <span>- {{muestra.nombre}}</span>
-                <button :disabled="muestra.cantidad===0" @click="[muestra.cantidad--, muestra.precio--]">-</button>
-                <span style="text-align: center">{{muestra.cantidad}}</span>
-                <button @click="[muestra.cantidad++, muestra.precio++]">+</button>
-            </div>
-            <hr>
-            <h6>{{precioTotal}}€ - {{ cantidadTotal }} Chupitos<button class="btn btn-warning ml-2" @click="comprar=true">Comprar</button></h6>
-        </aside>
-
-        <div id="ultimo" v-if="comprar">
-            <div>
-                <h4><u>{{ cantidadTotal }} Shots</u></h4>
-                <p v-if="ver.cantidad!=0" v-for="ver of total">{{ ver.cantidad }} x {{ ver.nombre }}</p>
-                <hr>
-                <h2>Total: {{ precioTotal }}€</h2><hr>
-                <button class="btn btn-success" @click="explo">Confirmar</button>
-                <button class="btn btn-danger" @click="comprar=false">Cancelar</button>
-            </div>
-        </div>
+    <div id="ultimo" v-if="comprar">
+      <div>
+        <h4><u>{{ cantidadTotal }} Shots</u></h4>
+        <p v-if="ver.cantidad!=0" v-for="ver of total">{{ ver.cantidad }} x {{ ver.nombre }}</p>
+        <hr>
+        <h2>Total: {{ precioTotal }}€</h2><hr>
+        <button class="btn-success" @click="explo">Confirmar</button>
+        <button class="btn-danger" @click="comprar=false">Cancelar</button>
+      </div>
+    </div>  
+  </div>
     
-    </div>
-    
-    <script>
-        
+  <script>
+    let navBarHeight = document.querySelector('.nav-bar').offsetHeight
+
+    document.querySelector('.aside-total').style.top = navBarHeight+'px'
+
         new Vue({
             el: '#app',
             data: {
-                cantidad: Number,
+                cantidad: 0,
                 picante: null,
                 fuego: null,
                 fuerte: null,
