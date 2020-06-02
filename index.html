@@ -11,12 +11,13 @@
       src: url(Roboto-Regular.ttf);
     }
     body {
-      user-select: none;
+      background-color: #FFF;
       color: #026C62;
       font-family: 'Roboto-Regular';
       padding: 0;
       margin: 0;
       min-width: 100vw;
+      user-select: none;
     }
     .nav-bar {
       background-color: #FCD7BD;
@@ -24,7 +25,7 @@
       left: 0;
       position: absolute;
       top: 0;
-      min-width: 100vw;
+      width: 100vw;
     }
     .nav-bar .logo {
       height: 90px;
@@ -47,12 +48,12 @@
       border-radius: 5px;
     }
     .mostrarChupitos {
-      margin: 150px 100px;
       display: flex;
       flex-wrap: wrap;
     }
     .chupito {
       align-items: center;
+      background-color: white;
       box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
       cursor: pointer;
       display: flex;
@@ -67,12 +68,10 @@
     }
     .aside-total {
       background-color: #026c62;
-      color: #fed700;
-      height: 75vh;
+      color: white;
       position: absolute;
       padding: 20px;
       right: 0;
-      width: 30vw;
       z-index: 1;
     }
     .close {
@@ -84,15 +83,20 @@
       top: 20px;
     }
     .aside-total div {
+      align-items: center;
       display: grid;
       grid-template-rows: 1fr;
       grid-template-columns: 10% 58% 12% 8% 12%;
+      justify-items: center;
+    }
+    .aside-total div > * {
+      margin: 2px 5px;
     }
     .aside-total button {
-      background-color: #fed700;
-      border: none;
-      border-radius: 2px;
-      color: #026c62;
+      background-color: transparent;
+      border: 2px solid #fed700;
+      border-radius: 3px;
+      color: #fed700;
       margin: 0 10px;
       outline: none;
       padding: 10px;
@@ -129,57 +133,53 @@
     .intro img {
       box-sizing: border-box;
       cursor: pointer;
-      height: 100%;
+      height: 80%;
     }
-        .fade-enter-active, .fade-leave-active {
-            transition: opacity .4s;
-        }
-        .fade-enter, .fade-leave-to {
-            opacity: 0;
-        }
-      .btn-success {
-        background-color: rgb(40,167,69);
-        border: none;
-        border-radius: 2px;
-        color: white;
-        outline: none;
-        padding: 10px;
-        margin: 0 10px;
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .4s;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
+    }
+    .btn-success, .btn-danger {
+      border: none;
+      border-radius: 2px;
+      color: white;
+      outline: none;
+      padding: 10px;
+      margin: 0 10px;
+    }
+    .btn-success {
+      background-color: rgb(40,167,69);
+    }
+    .btn-danger {
+      background-color: #dc3545;
+    }
+    #ultimo {
+      align-items: center;
+      background-color: rgba(0,0,0,0.6);
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100vw;
+      z-index: 2;
+    }
+    #ultimo div {
+      background-color: #FEFEFE;
+      border-radius: 20px;
+      border: 8px solid #026c62;
+      padding: 3vw;
+    }
+    @media only screen and (max-width: 600px) {
+      .intro img {
+        box-sizing: border-box;
+        cursor: pointer;
+        height: 40%;
       }
-      .btn-danger {
-        background-color: #dc3545;
-        border: none;
-        border-radius: 2px;
-        color: white;
-        outline: none;
-        padding: 10px;
-        margin: 0 10px;
-      }
-      #ultimo {
-        align-items: center;
-        background-color: rgba(0,0,0,0.6);
-        display: flex;
-        height: 100vh;
-        justify-content: center;
-        left: 0;
-        position: fixed;
-        top: 0;
-        width: 100vw;
-        z-index: 2;
-      }
-      #ultimo div {
-        background-color: #FEFEFE;
-        border-radius: 20px;
-        border: 8px solid #026c62;
-        padding: 3vw;
-      }
-      @media only screen and (max-width: 600px) {
-        .intro img {
-          box-sizing: border-box;
-          cursor: pointer;
-          height: 60%;
-        }
-      }
+    }
   </style>
 </head>
 <body>
@@ -283,87 +283,86 @@
     let navBarHeight = document.querySelector('.nav-bar').offsetHeight
 
     document.querySelector('.aside-total').style.top = navBarHeight+'px'
+    document.querySelector('.aside-total').style.height = (window.innerHeight-navBarHeight-40)+'px'
+    document.querySelector('.mostrarChupitos').style.marginTop = (navBarHeight*1.3)+'px'
+    document.querySelector('.mostrarChupitos').style.marginLeft = (navBarHeight*0.7)+'px'
 
-        new Vue({
-            el: '#app',
-            data: {
-                cantidad: 0,
-                picante: null,
-                fuego: null,
-                fuerte: null,
-                comprar: false,
-                mostrarAside: false,
-                total: [],
-                tragos: [
-                { fill: '45F', nombre: 'Harry Potter', ingrediente: ['Licor Azul', 'Ron'], picante: false, fuego: true, fuerte: true },
-                { fill: '2F4', nombre: 'Tasca Moe', ingrediente: ['Licor Azul', 'Licor Rojo'], picante: false, fuego: true, fuerte: true },
-                { fill: 'F23', nombre: 'Fuego fuego', ingrediente: ['Licor Banana', 'Licor Rojo'], picante: false, fuego: true, fuerte: true },
-                { fill: 'cba', nombre: 'Ferno', ingrediente: ['Fernet', 'Ají', 'Cynzano'], picante: true, fuego: true,  fuerte: true },
-                { fill: 'FF0', nombre: 'Pikachu', ingrediente: ['Licor Banana', 'Licor Naranja'], picante: true, fuego: false, fuerte: true },
-                { fill: 'FBB', nombre: 'Congo Beach', ingrediente: ['Ron Coco', 'Licor Fresa'], picante: false, fuego: false, fuerte: false },
-                { fill: 'FEE', nombre: 'Coconut Drink', ingrediente: ['Ron Coco', 'Granadina'], picante: false, fuego: false, fuerte: false },
-                { fill: 'FF9', nombre: 'Maracuyá', ingrediente: ['Licor Maracuyá', 'Granadina'], picante: false, fuego: false, fuerte: false },
-                { fill: 'FF9', nombre: 'TequilAzo', ingrediente: ['Tequila', 'Limón', 'Sal'], picante: false, fuego: false, fuerte: true },
-                { fill: 'FF7', nombre: 'Bananazo', ingrediente: ['Licor Banana', 'Vodka'], picante: false, fuego: false, fuerte: true },
-                { fill: 'CA3', nombre: 'Long Island', ingrediente: ['Tequila', 'Vodka', 'Ron'], picante: false, fuego: false, fuerte: true },
-                { fill: 'FF9', nombre: 'Ponche Crema', ingrediente: ['Ron', 'Piña Colada'], picante: false, fuego: false, fuerte: true },
-                { fill: '333', nombre: 'Jäger', ingrediente: ['Jägermeister'], picante: false, fuego: false, fuerte: true },
-                { fill: '1F1', nombre: 'El fuerte', ingrediente: ['Tequila', 'Ron', 'Vodka'], picante: false, fuego: false, fuerte: true },
-                { fill: 'F88', nombre: 'Tutankamon', ingrediente: ['Licor Beige', 'Granadina'], picante: false, fuego: false, fuerte: true }
-                ]
-            },
-            computed: {
-                filteredTragos() {
-                    return this.tragos.filter((trago) => {
-                        return trago.picante === this.picante && trago.fuego === this.fuego && trago.fuerte === this.fuerte
-                    })
-                },
-                precioTotal() {
-                    let sum = 0
+    new Vue({
+      el: '#app',
+      data: {
+        cantidad: 0,
+        picante: null,
+        fuego: null,
+        fuerte: null,
+        comprar: false,
+        mostrarAside: false,
+        total: [],
+        tragos: [
+          { fill: '45F', nombre: 'Harry Potter', ingrediente: ['Licor Azul', 'Ron'], picante: false, fuego: true, fuerte: true },
+          { fill: '2F4', nombre: 'Tasca Moe', ingrediente: ['Licor Azul', 'Licor Rojo'], picante: false, fuego: true, fuerte: true },
+          { fill: 'F23', nombre: 'Fuego fuego', ingrediente: ['Licor Banana', 'Licor Rojo'], picante: false, fuego: true, fuerte: true },
+          { fill: 'cba', nombre: 'Ferno', ingrediente: ['Fernet', 'Ají', 'Cynzano'], picante: true, fuego: true,  fuerte: true },
+          { fill: 'FF0', nombre: 'Pikachu', ingrediente: ['Licor Banana', 'Licor Naranja'], picante: true, fuego: false, fuerte: true },
+          { fill: 'FBB', nombre: 'Congo Beach', ingrediente: ['Ron Coco', 'Licor Fresa'], picante: false, fuego: false, fuerte: false },
+          { fill: 'FEE', nombre: 'Coconut Drink', ingrediente: ['Ron Coco', 'Granadina'], picante: false, fuego: false, fuerte: false },
+          { fill: 'FF9', nombre: 'Maracuyá', ingrediente: ['Licor Maracuyá', 'Granadina'], picante: false, fuego: false, fuerte: false },
+          { fill: 'FF9', nombre: 'TequilAzo', ingrediente: ['Tequila', 'Limón', 'Sal'], picante: false, fuego: false, fuerte: true },
+          { fill: 'FF7', nombre: 'Bananazo', ingrediente: ['Licor Banana', 'Vodka'], picante: false, fuego: false, fuerte: true },
+          { fill: 'CA3', nombre: 'Long Island', ingrediente: ['Tequila', 'Vodka', 'Ron'], picante: false, fuego: false, fuerte: true },
+          { fill: 'FF9', nombre: 'Ponche Crema', ingrediente: ['Ron', 'Piña Colada'], picante: false, fuego: false, fuerte: true },
+          { fill: '333', nombre: 'Jäger', ingrediente: ['Jägermeister'], picante: false, fuego: false, fuerte: true },
+          { fill: '1F1', nombre: 'El fuerte', ingrediente: ['Tequila', 'Ron', 'Vodka'], picante: false, fuego: false, fuerte: true },
+          { fill: 'F88', nombre: 'Tutankamon', ingrediente: ['Licor Beige', 'Granadina'], picante: false, fuego: false, fuerte: true }
+        ]
+      },
+      computed: {
+        filteredTragos() {
+          return this.tragos.filter((trago) => {
+            return trago.picante === this.picante && trago.fuego === this.fuego && trago.fuerte === this.fuerte
+          })
+        },
+        precioTotal() {
+          let sum = 0
 
-                    this.total.forEach(element => {
-                        sum += element.precio
-                    })
-                    
-                    return sum
-                },
-                cantidadTotal() {
-                    let cont = 0
-
-                    this.total.forEach(element => {
-                        cont += element.cantidad
-                    })
-                    return cont
-                }
-            },
-            methods: {
-                explo() {
-                    alert(`Gracias por su compra, es imaginaria así que no va a tener ningún chupito ni yo €${this.precioTotal}, pero buej, cosas de la vida.`)
-                    location.reload();
-                },
-                meme(value) {
-
-                    const size = Object.keys(this.total).length;
-                    let comp = false
-                    if(size === 0) {
-                        console.log('Caso 1: arreglo vacio');
-                        return this.total.push({nombre: value.nombre, precio: 1, cantidad: 1})
-                    } else {
-                        this.total.forEach(element => {
-                            if (element.nombre === value.nombre) {
-                                console.log('Caso2: coinciden nombres, se agrega a cantidad');
-                                comp = true
-                                return [element.cantidad++, element.precio++]
-                            }
-                        })
-                    }  
-                    console.log(comp);  
-                    if(comp===false) {
-                        return this.total.push({nombre: value.nombre, precio: 1, cantidad: 1})
-                    }     
-                }
-            }
-        })
-    </script>
+          this.total.forEach(element => {
+            sum += element.precio
+          })
+            
+          return sum
+        },
+        cantidadTotal() {
+          let cont = 0
+          this.total.forEach(element => {
+            cont += element.cantidad
+          })
+          return cont
+        }
+      },
+      methods: {
+        explo() {
+          alert(`Gracias por su compra de €${this.precioTotal}, se le descontará de su cuenta imaginaria.`)
+          location.reload();
+        },
+        meme(value) {
+          const size = Object.keys(this.total).length;
+          let comp = false
+          if(size === 0) {
+            return this.total.push({nombre: value.nombre, precio: 1, cantidad: 1})
+          } else {
+            this.total.forEach(element => {
+              if (element.nombre === value.nombre) {
+                comp = true
+                return [element.cantidad++, element.precio++]
+              }
+            })
+          }  
+          console.log(comp);  
+          if(comp===false) {
+            return this.total.push({nombre: value.nombre, precio: 1, cantidad: 1})
+          }     
+        }
+      }
+    })
+  </script>
 </body>
 </html>
